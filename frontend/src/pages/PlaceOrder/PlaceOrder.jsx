@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../context/StoreContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 
 const PlaceOrder = () => {
-  const navigate= useNavigate();
+  const navigate = useNavigate();
 
   const { getTotalCartAmount, token, food_list, cartItems, url } =
     useContext(StoreContext);
@@ -30,39 +30,41 @@ const PlaceOrder = () => {
 
   const placeOrder = async (event) => {
     event.preventDefault();
-    let orderItems = [];
-    food_list.map((item) => {
+    const orderItems = [];
+    food_list.forEach((item) => {
       if (cartItems[item._id] > 0) {
-        let itemInfo = item;
-        itemInfo["quantity"] = cartItems[item._id];
-        orderItems.push(itemInfo);
+        orderItems.push({
+          _id: item._id,
+          quantity: cartItems[item._id],
+        });
       }
     });
-    let orderData = {
+
+    const orderData = {
       address: data,
       items: orderItems,
-      amount: getTotalCartAmount() + 2,
     };
-    
-    let response= await axios.post(url+"/api/order/place",orderData,{headers:{token}});
-    if(response.data.success){
-      const {session_url}=response.data;
+
+    const response = await axios.post(url + "/api/order/place", orderData, {
+      headers: { token },
+    });
+    if (response.data.success) {
+      const { session_url } = response.data;
       window.location.replace(session_url);
-    }else{
-      toast.error("Errors!")
+    } else {
+      toast.error(response.data.message || "Unable to place order");
     }
   };
 
-  useEffect(()=>{
-    if(!token){
-      toast.error("Please Login first")
-      navigate("/cart")
-    }
-    else if(getTotalCartAmount()===0){
+  useEffect(() => {
+    if (!token) {
+      toast.error("Please login first");
+      navigate("/cart");
+    } else if (getTotalCartAmount() === 0) {
       toast.error("Please Add Items to Cart");
-      navigate("/cart")
+      navigate("/cart");
     }
-  },[token])
+  }, [token, navigate, getTotalCartAmount]);
   return (
     <form className="place-order" onSubmit={placeOrder}>
       <div className="place-order-left">

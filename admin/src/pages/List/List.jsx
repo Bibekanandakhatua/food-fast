@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./List.css";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
-const List = ({ url }) => {
+const List = () => {
   const navigate = useNavigate();
-  const { token,admin } = useContext(StoreContext);
+  const { token, admin, apiUrl } = useContext(StoreContext);
   const [list, setList] = useState([]);
 
   const fetchList = async () => {
-    const response = await axios.get(`${url}/api/food/list`);
+    const response = await axios.get(`${apiUrl}/api/food/list`);
     if (response.data.success) {
       setList(response.data.data);
     } else {
@@ -22,7 +21,7 @@ const List = ({ url }) => {
 
   const removeFood = async (foodId) => {
     const response = await axios.post(
-      `${url}/api/food/remove`,
+      `${apiUrl}/api/food/remove`,
       { id: foodId },
       { headers: { token } }
     );
@@ -34,12 +33,13 @@ const List = ({ url }) => {
     }
   };
   useEffect(() => {
-    if (!admin && !token) {
+    if (!admin || !token) {
       toast.error("Please Login First");
       navigate("/");
+      return;
     }
     fetchList();
-  }, []);
+  }, [admin, token, navigate]);
 
   return (
     <div className="list add flex-col">
@@ -48,15 +48,17 @@ const List = ({ url }) => {
         <div className="list-table-format title">
           <b>Image</b>
           <b>Name</b>
+          <b>Shop</b>
           <b>Category</b>
           <b>Price</b>
           <b>Action</b>
         </div>
-        {list.map((item, index) => {
+        {list.map((item) => {
           return (
-            <div key={index} className="list-table-format">
-              <img src={`${url}/images/` + item.image} alt="" />
+            <div key={item._id} className="list-table-format">
+              <img src={`${apiUrl}/images/` + item.image} alt="" />
               <p>{item.name}</p>
+              <p>{item.shopId?.name || "Unassigned"}</p>
               <p>{item.category}</p>
               <p>${item.price}</p>
               <p onClick={() => removeFood(item._id)} className="cursor">

@@ -1,0 +1,76 @@
+.category-shops {
+  margin-top: 30px;
+  animation: fadeInUp 0.8s ease;
+}
+
+.category-shops-head h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.category-shops-list {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding: 10px 0 20px;
+}
+
+.category-shops-list::-webkit-scrollbar {
+  display: none;
+}
+
+.shop-chip {
+  min-width: 250px;
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shop-chip:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.shop-chip strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.shop-chip span {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.shop-chip.active {
+  border-color: var(--brand);
+  background: var(--brand-glow);
+  box-shadow: 0 0 20px var(--brand-glow);
+}
+
+.shop-chip.active strong {
+  color: #fff;
+}
+
+.shop-chip.active span {
+  color: #fff;
+  opacity: 0.8;
+}
+
+.category-shops-loading,
+.category-shops-empty {
+  color: var(--text-muted);
+  font-size: 16px;
+  padding: 20px 0;
+}

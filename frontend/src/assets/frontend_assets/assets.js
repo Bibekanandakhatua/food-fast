@@ -84,36 +84,44 @@ export const assets = {
 
 export const menu_list = [
     {
-        menu_name: "Salad",
-        menu_image: menu_1
+        menu_name: "Chicken Grill",
+        menu_image: menu_1,
+        category_key: "Chicken Grill"
     },
     {
-        menu_name: "Rolls",
-        menu_image: menu_2
+        menu_name: "Meat Rolls",
+        menu_image: menu_2,
+        category_key: "Meat Rolls"
     },
     {
-        menu_name: "Deserts",
-        menu_image: menu_3
+        menu_name: "Steaks",
+        menu_image: menu_3,
+        category_key: "Steaks"
     },
     {
-        menu_name: "Sandwich",
-        menu_image: menu_4
+        menu_name: "Sea Food",
+        menu_image: menu_4,
+        category_key: "Sea Food"
     },
     {
-        menu_name: "Cake",
-        menu_image: menu_5
+        menu_name: "BBQ Platters",
+        menu_image: menu_5,
+        category_key: "BBQ Platters"
     },
     {
-        menu_name: "Pure Veg",
-        menu_image: menu_6
+        menu_name: "Lamb Chops",
+        menu_image: menu_6,
+        category_key: "Lamb Chops"
     },
     {
-        menu_name: "Pasta",
-        menu_image: menu_7
+        menu_name: "Meat Pasta",
+        menu_image: menu_7,
+        category_key: "Meat Pasta"
     },
     {
-        menu_name: "Noodles",
-        menu_image: menu_8
+        menu_name: "Keema Noodles",
+        menu_image: menu_8,
+        category_key: "Keema Noodles"
     }]
 
 export const food_list = [

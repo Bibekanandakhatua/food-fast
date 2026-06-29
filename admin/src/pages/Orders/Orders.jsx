@@ -1,21 +1,18 @@
-import React from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Orders.css";
-import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 import { assets } from "../../assets/assets";
-import { useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
 import { useNavigate } from "react-router-dom";
 
-const Orders = ({ url }) => {
+const Orders = () => {
   const navigate = useNavigate();
-  const { token, admin } = useContext(StoreContext);
+  const { token, admin, apiUrl } = useContext(StoreContext);
   const [orders, setOrders] = useState([]);
 
   const fetchAllOrder = async () => {
-    const response = await axios.get(url + "/api/order/list", {
+    const response = await axios.get(apiUrl + "/api/order/list", {
       headers: { token },
     });
     if (response.data.success) {
@@ -25,7 +22,7 @@ const Orders = ({ url }) => {
 
   const statusHandler = async (event, orderId) => {
     const response = await axios.post(
-      url + "/api/order/status",
+      apiUrl + "/api/order/status",
       {
         orderId,
         status: event.target.value,
@@ -40,19 +37,20 @@ const Orders = ({ url }) => {
     }
   };
   useEffect(() => {
-    if (!admin && !token) {
+    if (!admin || !token) {
       toast.error("Please Login First");
       navigate("/");
+      return;
     }
     fetchAllOrder();
-  }, []);
+  }, [admin, token, navigate]);
 
   return (
     <div className="order add">
       <h3>Order Page</h3>
       <div className="order-list">
-        {orders.map((order, index) => (
-          <div key={index} className="order-item">
+        {orders.map((order) => (
+          <div key={order._id} className="order-item">
             <img src={assets.parcel_icon} alt="" />
             <div>
               <p className="order-item-food">

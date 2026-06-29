@@ -8,18 +8,19 @@ import { toast } from "react-toastify";
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState("home");
   const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
-  const logout=()=>{
+  const logout = () => {
     localStorage.removeItem("token");
     setToken("");
-    toast.success("Logout Successfully")
+    toast.success("Logout Successfully");
     navigate("/");
-  }
+  };
   return (
     <div className="navbar">
-      <Link to="/">
-        <img src={assets.logo} alt="" className="logo" />
+      <Link to="/" className="brand-logo">
+        <span className="brand-badge">FF</span>
+        <span className="brand-text">FoodFast</span>
       </Link>
       <ul className="navbar-menu">
         <Link
@@ -37,11 +38,11 @@ const Navbar = ({ setShowLogin }) => {
           menu
         </a>
         <a
-          href="#app-download"
-          onClick={() => setMenu("mobile-app")}
-          className={menu === "mobile-app" ? "active" : ""}
+          href="#favorite-food"
+          onClick={() => setMenu("favorite-food")}
+          className={menu === "favorite-food" ? "active" : ""}
         >
-          mobile-app
+          favorite food
         </a>
         <a
           href="#footer"
@@ -52,7 +53,9 @@ const Navbar = ({ setShowLogin }) => {
         </a>
       </ul>
       <div className="navbar-right">
-        <img src={assets.search_icon} alt="" />
+        <button className="icon-btn" aria-label="Search">
+          <img src={assets.search_icon} alt="" />
+        </button>
         <div className="navbar-search-icon">
           <Link to="/cart">
             <img src={assets.basket_icon} alt="" />
@@ -60,14 +63,20 @@ const Navbar = ({ setShowLogin }) => {
           <div className={getTotalCartAmount() === 0 ? "" : "dot"}></div>
         </div>
         {!token ? (
-          <button onClick={() => setShowLogin(true)}>sign in</button>
+          <button className="signin-btn" onClick={() => setShowLogin(true)}>sign in</button>
         ) : (
           <div className="navbar-profile">
             <img src={assets.profile_icon} alt="" />
             <ul className="nav-profile-dropdown">
-              <li onClick={()=>navigate("/myorders")}><img src={assets.bag_icon} alt="" /><p>Orders</p></li>
+              <li onClick={() => navigate("/myorders")}>
+                <img src={assets.bag_icon} alt="" />
+                <p>Orders</p>
+              </li>
               <hr />
-              <li onClick={logout}><img src={assets.logout_icon} alt="" /><p>Logout</p></li>
+              <li onClick={logout}>
+                <img src={assets.logout_icon} alt="" />
+                <p>Logout</p>
+              </li>
             </ul>
           </div>
         )}

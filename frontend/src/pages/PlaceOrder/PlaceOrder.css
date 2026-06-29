@@ -1,44 +1,81 @@
-.place-order{
-    display: flex;
-    align-items: start;
-    justify-content: space-between;
-    gap: 50px;
-    margin-top: 100px;
+.place-order {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 40px;
+  margin: 60px 0;
+  animation: fadeInUp 0.8s ease;
 }
-.place-order-left{
-    width: 100%;
-    max-width: max(30%,500px);
+
+.place-order-left {
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  padding: 35px;
 }
-.place-order-left .title{
-    font-size: 30px;
-    font-weight: 600;
-    margin-bottom: 50px;
+
+.place-order-left .title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 30px;
 }
-.place-order-left input{
-    margin-bottom: 15px;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #c5c5c5;
-    border-radius: 4px;
-    outline-color: tomato;
+
+.place-order-left input {
+  margin-bottom: 15px;
+  width: 100%;
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  border-radius: 14px;
+  color: #fff;
+  font-size: 15px;
+  transition: all 0.3s ease;
 }
-.place-order-left .multi-fields{
-    display: flex;
-    gap: 10px;
+
+.place-order-left input:focus {
+  border-color: var(--brand);
+  background: rgba(255, 255, 255, 0.08);
+  outline: none;
 }
-.place-order-right{
-    width: 100%;
-    max-width: max(40%,500px);
+
+.place-order-left .multi-fields {
+  display: flex;
+  gap: 15px;
 }
-.place-order .cart-total button{
-    margin-top: 30px;
+
+.place-order-right .cart-total {
+  border: 1px solid var(--glass-border);
+  background: var(--surface-glass);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 28px;
+  padding: 35px;
 }
-@media (max-width:800px) {
-    .place-order{
-        flex-direction: column;
-        margin-top: 50px;
-    }
-    .place-order-left .title{
-        font-size: 27px;
-    }
+
+.place-order .cart-total button {
+  margin-top: 25px;
+  border: none;
+  width: 100%;
+  border-radius: 14px;
+  background: var(--brand);
+  color: #fff;
+  padding: 15px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  box-shadow: 0 4px 15px var(--brand-glow);
+  transition: all 0.3s ease;
 }
+
+.place-order .cart-total button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--brand-glow);
+}
+
+@media (max-width: 900px) {
+  .place-order {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+

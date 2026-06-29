@@ -1,130 +1,89 @@
-# TOMATO - Food Ordering Website
+# FoodFast (MERN)
 
-This repository hosts the source code for TOMATO, a dynamic food ordering website built with the MERN Stack. It offers a user-friendly platform for seamless online food ordering.
+FoodFast is a full-stack food ordering app with:
+- Customer app (`frontend`)
+- Admin app (`admin`)
+- API server (`backend`)
 
-## Demo
+## Monorepo Structure
+- `backend`: Express + MongoDB + JWT + Stripe
+- `frontend`: React + Vite (customer)
+- `admin`: React + Vite (admin)
 
-- User Panel: [https://food-delivery-frontend-s2l9.onrender.com/](https://food-delivery-frontend-s2l9.onrender.com/)
-- Admin Panel: [https://food-delivery-admin-wrme.onrender.com/](https://food-delivery-admin-wrme.onrender.com/)
+## Local Setup
 
-## Features
-
-- User Panel
-- Admin Panel
-- JWT Authentication
-- Password Hashing with Bcrypt
-- Stripe Payment Integration
-- Login/Signup
-- Logout
-- Add to Cart
-- Place Order
-- Order Management
-- Products Management
-- Filter Food Products
-- Login/Signup
-- Authenticated APIs
-- REST APIs
-- Role-Based Identification
-- Beautiful Alerts
-
-## Screenshots
-
-![Hero](https://i.ibb.co/59cwY75/food-hero.png)
-- Hero Section
-
-![Products](https://i.ibb.co/JnNQPyQ/food-products.png)
-- Products Section
-
-![Cart](https://i.ibb.co/t2LrQ8p/food-cart.png)
-- Cart Page
-
-![Login](https://i.ibb.co/s6PgwkZ/food-login.png)
-- Login Popup
-
-## Run Locally
-
-Clone the project
-
+### 1) Install dependencies
 ```bash
-    git clone https://github.com/Mshandev/Food-Delivery
-```
-Go to the project directory
-
-```bash
-    cd Food-Delivery
-```
-Install dependencies (frontend)
-
-```bash
-    cd frontend
-    npm install
-```
-Install dependencies (admin)
-
-```bash
-    cd admin
-    npm install
-```
-Install dependencies (backend)
-
-```bash
-    cd backend
-    npm install
-```
-Setup Environment Vaiables
-
-```Make .env file in "backend" folder and store environment Variables
-  JWT_SECRET=YOUR_SECRET_TEXT
-  SALT=YOUR_SALT_VALUE
-  MONGO_URL=YOUR_DATABASE_URL
-  STRIPE_SECRET_KEY=YOUR_KEY
- ```
-
-Setup the Frontend and Backend URL
-   - App.jsx in Admin folder
-      const url = YOUR_BACKEND_URL
-     
-  - StoreContext.js in Frontend folder
-      const url = YOUR_BACKEND_URL
-
-  - orderController in Backend folder
-      const frontend_url = YOUR_FRONTEND_URL 
-
-Start the Backend server
-
-```bash
-    nodemon server.js
+cd backend && npm install
+cd ../frontend && npm install
+cd ../admin && npm install
 ```
 
-Start the Frontend server
+### 2) Configure env files
+Copy examples:
+- `backend/.env.example` -> `backend/.env`
+- `frontend/.env.example` -> `frontend/.env`
+- `admin/.env.example` -> `admin/.env`
 
+Minimum backend env:
+- `MONGO_URL`
+- `JWT_SECRET`
+- `SALT`
+- `STRIPE_SECRET_KEY`
+- `FRONTEND_URL`
+- `CORS_ORIGINS`
+
+Frontend/Admin env:
+- `VITE_API_URL=http://localhost:4000`
+
+### 3) Seed demo data (optional)
 ```bash
-    npm start
+cd backend
+npm run seed:data
 ```
 
-Start the Backend server
-
+### 4) Run apps
+Terminal 1:
 ```bash
-    npm start
+cd backend
+npm run server
 ```
-## Tech Stack
-* [React](https://reactjs.org/)
-* [Node.js](https://nodejs.org/en)
-* [Express.js](https://expressjs.com/)
-* [Mongodb](https://www.mongodb.com/)
-* [Stripe](https://stripe.com/)
-* [JWT-Authentication](https://jwt.io/introduction)
-* [Multer](https://www.npmjs.com/package/multer)
 
-## Deployment
+Terminal 2:
+```bash
+cd frontend
+npm run dev
+```
 
-The application is deployed on Render.
+Terminal 3:
+```bash
+cd admin
+npm run dev
+```
 
-## Contributing
+## Production Build Checks
+```bash
+cd frontend && npm run lint && npm run build
+cd ../admin && npm run lint && npm run build
+cd ../backend && node --check server.js
+```
 
-Contributions are always welcome!
-Just raise an issue, and we will discuss it.
+## Deploy on Render
+This repo includes `render.yaml` for one-click Blueprint deploy.
 
-## Feedback
+### Steps
+1. Push repository to GitHub.
+2. In Render, choose **New +** -> **Blueprint**.
+3. Select this repo and apply `render.yaml`.
+4. Set missing secret env vars in Render:
+   - Backend: `MONGO_URL`, `JWT_SECRET`, `STRIPE_SECRET_KEY`, `FRONTEND_URL`, `CORS_ORIGINS`
+   - Frontend/Admin: `VITE_API_URL` (backend URL)
+5. Redeploy services.
 
-If you have any feedback, please reach out to me [here](https://www.linkedin.com/in/muhammad-shan-full-stack-developer/)
+### Health endpoint
+Backend health check:
+- `GET /api/health`
+
+## Notes
+- Uploaded files are stored in `backend/uploads` (ephemeral on many hosts). Use cloud storage (S3/Cloudinary) for durable production media.
+- Keep `.env` files out of git (already covered in `.gitignore`).

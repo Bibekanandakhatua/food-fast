@@ -1,17 +1,29 @@
 import jwt from "jsonwebtoken";
 
 const authMiddleware = async (req, res, next) => {
-  const { token } = req.headers;
+  const authHeader = req.headers.authorization;
+  const bearerToken =
+    authHeader && authHeader.startsWith("Bearer ")
+      ? authHeader.slice(7)
+      : "";
+  const token = req.headers.token || bearerToken;
+
   if (!token) {
-    return res.json({ success: false, message: "Not Authorized Login Again" });
+    return res
+      .status(401)
+      .json({ success: false, message: "Not Authorized. Login again." });
   }
+
   try {
-    const token_decode = jwt.verify(token, process.env.JWT_SECRET);
-    req.body.userId = token_decode.id;
+    const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = tokenDecode.id;
     next();
   } catch (error) {
     console.log(error);
-    res.json({success:false,message:"Error"});
+    res
+      .status(401)
+      .json({ success: false, message: "Session expired. Login again." });
   }
 };
+
 export default authMiddleware;

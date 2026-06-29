@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Add.css";
 import { assets } from "../../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useContext } from "react";
 import { StoreContext } from "../../context/StoreContext";
-import { useEffect } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Add = ({url}) => {
-  const navigate=useNavigate();
-  const {token,admin} = useContext(StoreContext);
+const Add = () => {
+  const navigate = useNavigate();
+  const { token, admin, apiUrl } = useContext(StoreContext);
   const [image, setImage] = useState(false);
+  const [shops, setShops] = useState([]);
   const [data, setData] = useState({
     name: "",
     description: "",
     price: "",
     category: "Salad",
+    shopId: "",
   });
 
   const onChangeHandler = (event) => {
@@ -32,15 +32,19 @@ const Add = ({url}) => {
     formData.append("description", data.description);
     formData.append("price", Number(data.price));
     formData.append("category", data.category);
+    formData.append("shopId", data.shopId);
     formData.append("image", image);
 
-    const response = await axios.post(`${url}/api/food/add`, formData,{headers:{token}});
+    const response = await axios.post(`${apiUrl}/api/food/add`, formData, {
+      headers: { token },
+    });
     if (response.data.success) {
       setData({
         name: "",
         description: "",
         price: "",
         category: "Salad",
+        shopId: "",
       });
       setImage(false);
       toast.success(response.data.message);
@@ -48,12 +52,22 @@ const Add = ({url}) => {
       toast.error(response.data.message);
     }
   };
-  useEffect(()=>{
-    if(!admin && !token){
+  useEffect(() => {
+    if (!admin || !token) {
       toast.error("Please Login First");
-       navigate("/");
+      navigate("/");
+      return;
     }
-  },[])
+
+    const fetchShops = async () => {
+      const response = await axios.get(`${apiUrl}/api/shop/list`);
+      if (response.data.success) {
+        setShops(response.data.data);
+      }
+    };
+    fetchShops();
+  }, [admin, token, navigate, apiUrl]);
+
   return (
     <div className="add">
       <form onSubmit={onSubmitHandler} className="flex-col">
@@ -112,6 +126,22 @@ const Add = ({url}) => {
               <option value="Pure Veg">Pure Veg</option>
               <option value="Pasta">Pasta</option>
               <option value="Noodles">Noodles</option>
+            </select>
+          </div>
+          <div className="add-category flex-col">
+            <p>Shop</p>
+            <select
+              name="shopId"
+              required
+              onChange={onChangeHandler}
+              value={data.shopId}
+            >
+              <option value="">Select Shop</option>
+              {shops.map((shop) => (
+                <option key={shop._id} value={shop._id}>
+                  {shop.name}
+                </option>
+              ))}
             </select>
           </div>
           <div className="add-price flex-col">

@@ -1,28 +1,76 @@
-import React from "react";
+import { useContext } from "react";
 import Navbar from "./components/Navbar/Navbar";
 import Sidebar from "./components/Sidebar/Sidebar";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Add from "./pages/Add/Add";
 import List from "./pages/List/List";
 import Orders from "./pages/Orders/Orders";
+import Shops from "./pages/Shops/Shops";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Login from "./components/Login/Login";
+import { StoreContext } from "./context/StoreContext";
+
+const ProtectedRoute = ({ isAuthenticated, children }) => {
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
+};
 
 const App = () => {
-  const url = "https://food-delivery-backend-5b6g.onrender.com";
+  const { isAuthenticated } = useContext(StoreContext);
+
   return (
-    <div>
+    <div className="admin-shell">
       <ToastContainer />
       <Navbar />
-      <hr />
       <div className="app-content">
-        <Sidebar />
+        {isAuthenticated ? <Sidebar /> : null}
         <Routes>
-          <Route path="/" element={<Login url={url}/>} />
-          <Route path="/add" element={<Add url={url}/>} />
-          <Route path="/list" element={<List url={url}/>} />
-          <Route path="/orders" element={<Orders url={url}/>} />
+          <Route
+            path="/"
+            element={
+              isAuthenticated ? <Navigate to="/dashboard/add" replace /> : <Login />
+            }
+          />
+          <Route
+            path="/dashboard/add"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Add />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/list"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <List />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/orders"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Orders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/shops"
+            element={
+              <ProtectedRoute isAuthenticated={isAuthenticated}>
+                <Shops />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="*"
+            element={<Navigate to={isAuthenticated ? "/dashboard/add" : "/"} replace />}
+          />
         </Routes>
       </div>
     </div>

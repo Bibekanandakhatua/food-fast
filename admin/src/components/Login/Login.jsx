@@ -1,14 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./Login.css";
-import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { StoreContext } from "../../context/StoreContext";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ url }) => {
-  const navigate=useNavigate();
-  const {admin,setAdmin,token, setToken } = useContext(StoreContext);
+const Login = () => {
+  const navigate = useNavigate();
+  const { admin, setAdmin, token, setToken, apiUrl } = useContext(StoreContext);
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -20,27 +19,28 @@ const Login = ({ url }) => {
   };
   const onLogin = async (event) => {
     event.preventDefault();
-    const response = await axios.post(url + "/api/user/login", data);
+    const response = await axios.post(apiUrl + "/api/user/login", data);
     if (response.data.success) {
       if (response.data.role === "admin") {
         setToken(response.data.token);
         setAdmin(true);
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("admin", true);
+        localStorage.setItem("admin", "true");
         toast.success("Login Successfully");
-        navigate("/add")
-      }else{
+        navigate("/dashboard/add");
+      } else {
         toast.error("You are not an admin");
       }
     } else {
       toast.error(response.data.message);
     }
   };
-  useEffect(()=>{
-    if(admin && token){
-       navigate("/add");
+  useEffect(() => {
+    if (admin && token) {
+      navigate("/dashboard/add");
     }
-  },[])
+  }, [admin, token, navigate]);
+
   return (
     <div className="login-popup">
       <form onSubmit={onLogin} className="login-popup-container">

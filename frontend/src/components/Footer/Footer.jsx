@@ -7,12 +7,13 @@ const Footer = () => {
     <div className="footer" id="footer">
       <div className="footer-content">
         <div className="footer-content-left">
-          <img src={assets.logo} alt="" />
+          <div className="brand-logo footer-brand">
+            <span className="brand-badge">FF</span>
+            <span className="brand-text">FoodFast</span>
+          </div>
           <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cumque
-            nostrum iure suscipit maiores non harum incidunt unde magnam
-            molestias ipsum qui vel aut natus aspernatur ipsa dignissimos,
-            numquam assumenda deserunt.
+            City-loved meals delivered in minutes. From light salads to comfort
+            bowls, FoodFast keeps your table full and your schedule on track.
           </p>
           <div className="footer-social-icons">
             <img src={assets.facebook_icon} alt="" />
@@ -32,14 +33,14 @@ const Footer = () => {
         <div className="footer-content-right">
           <h2>Get in touch</h2>
           <ul>
-            <li>+92-308-4900522</li>
-            <li>contact@tomato.com</li>
+            <li>+1 (555) 014-9090</li>
+            <li>hello@foodfast.com</li>
           </ul>
         </div>
       </div>
       <hr />
       <p className="footer-copyright">
-        Copyright 2024 @ Tomato.com - All Right Reserved.
+        Copyright 2026 @ FoodFast - All Rights Reserved.
       </p>
     </div>
   );

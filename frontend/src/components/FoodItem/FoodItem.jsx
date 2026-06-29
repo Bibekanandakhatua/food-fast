@@ -1,27 +1,54 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import "./FoodItem.css";
-import { assets } from "../../assets/frontend_assets/assets";
+import { assets, menu_list } from "../../assets/frontend_assets/assets";
 import { StoreContext } from "../../context/StoreContext";
 
-const FoodItem = ({ id, name, price, description, image }) => {
-  const {cartItems,addToCart,removeFromCart,url}=useContext(StoreContext); 
+const FoodItem = ({ id, name, price, description, image, category }) => {
+  const { cartItems, addToCart, removeFromCart, url } = useContext(StoreContext);
+
+  const fallbackImage = useMemo(() => {
+    const found = menu_list.find((item) => item.category_key === category);
+    return found ? found.menu_image : menu_list[0].menu_image;
+  }, [category]);
+
+  const resolvedImage = useMemo(() => {
+    if (!image) return fallbackImage;
+    if (String(image).startsWith("http")) return image;
+    return `${url}/images/${image}`;
+  }, [image, fallbackImage, url]);
+
+  const [imageSrc, setImageSrc] = useState(resolvedImage);
+
+  useEffect(() => {
+    setImageSrc(resolvedImage);
+  }, [resolvedImage]);
 
   return (
     <div className="food-item">
       <div className="food-item-img-container">
-        <img src={url+"/images/"+image} alt="" className="food-item-image" />
+        <img
+          src={imageSrc}
+          alt={name}
+          className="food-item-image"
+          onError={() => setImageSrc(fallbackImage)}
+        />
         {!cartItems[id] ? (
-          <img
-            className="add"
+          <button
+            type="button"
+            className="add add-btn"
             onClick={() => addToCart(id)}
-            src={assets.add_icon_white}
-            alt=""
-          />
+          >
+            <img src={assets.add_icon_white} alt="Add item" />
+          </button>
         ) : (
           <div className="food-item-counter">
-            <img onClick={()=>removeFromCart(id)} src={assets.remove_icon_red} alt="" />
+            <button type="button" onClick={() => removeFromCart(id)}>
+              <img src={assets.remove_icon_red} alt="Remove item" />
+            </button>
             <p>{cartItems[id]}</p>
-            <img onClick={()=>addToCart(id)} src={assets.add_icon_green} alt="" />
+            <button type="button" onClick={() => addToCart(id)}>
+              <img src={assets.add_icon_green} alt="Add item" />
+            </button>
           </div>
         )}
       </div>

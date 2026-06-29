@@ -1,0 +1,87 @@
+.shops-page {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.shops-form,
+.shops-list {
+  border: 1px solid var(--admin-line);
+  border-radius: 16px;
+  background: var(--admin-card);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.shops-form input {
+  border: 1px solid var(--admin-line);
+  border-radius: 10px;
+  padding: 0.68rem;
+}
+
+.shops-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.4rem;
+}
+
+.category-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--admin-line);
+  border-radius: 9px;
+  padding: 0.4rem 0.5rem;
+}
+
+.shops-form button {
+  border: none;
+  border-radius: 10px;
+  padding: 0.72rem;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(120deg, var(--admin-brand), var(--admin-brand-2));
+}
+
+.shop-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--admin-line);
+  border-radius: 12px;
+  padding: 0.7rem;
+}
+
+.shop-name {
+  font-weight: 700;
+}
+
+.shop-meta,
+.shop-categories {
+  font-size: 0.85rem;
+  color: var(--admin-soft);
+}
+
+.shop-card button {
+  border: 1px solid #f0bbb5;
+  background: #ffeae7;
+  color: #93281c;
+  border-radius: 8px;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+}
+
+@media (max-width: 980px) {
+  .shops-page {
+    grid-template-columns: 1fr;
+  }
+}
